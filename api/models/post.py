@@ -6,8 +6,8 @@ class Post(models.Model):
 
     author_id = models.ForeignKey(
         User,
-        on_delete=models.DO_NOTHING
+        on_delete=models.CASCADE
     )
-    content = models.CharField(max_length=150)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    content = models.TextField() 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
