@@ -1,12 +1,35 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .post import Post
+from .comment import Comment
+from .friendship import Friendship
 
 
 
 class Notification(models.Model):
-    post_id = models.ForeignKey(
+    NOTIFICATION_TYPES = [
+        ('FRIEND_REQUEST', 'Friend Request'),
+        ('COMMENT', 'Comment'),
+        ('COMMENT_REPLY', 'Comment Reply'),
+    ]
+    user = models.ForeignKey(User on_delete=models.CASCADE) #recipient of notifications
+    type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    post = models.ForeignKey(
         Post,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+    comment = models.ForeignKey(
+        Comment,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+    friendship = models.ForeignKey(
+        Friendship,
+        null=True,
+        blank=True,
         on_delete=models.CASCADE
     )
     content = models.CharField(max_length=150)
@@ -15,7 +38,3 @@ class Notification(models.Model):
 
     #should look into either deleting notifications after they are read, or maybe a periodic cleanup of old notifications. django post save could do it automatically, 
     # or we could archive, but then we would still be storing lots of notification objects.
-    # @receiver(post_save, sender=Notification)
-    # def auto_delete_read_notifications(sender, instance, **kwargs):
-    #     if instance.is_read:
-    #         instance.delete()

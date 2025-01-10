@@ -16,12 +16,12 @@ class Friendship(models.Model):
         default='PENDING'
     )
     # added related name to make it easier to query in django
-    requesting_id = models.ForeignKey(
+    requesting_user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='friendship_requests_sent'
     )
-    requested_id = models.ForeignKey(
+    requested_user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='friendship_requests_received'
