@@ -4,16 +4,14 @@ from .post import Post
 from .comment import Comment
 from .friendship import Friendship
 
-
+class NotificationType(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    description = models.TextField() #Metadata of what notification represents
 
 class Notification(models.Model):
-    NOTIFICATION_TYPES = [
-        ('FRIEND_REQUEST', 'Friend Request'),
-        ('COMMENT', 'Comment'),
-        ('COMMENT_REPLY', 'Comment Reply'),
-    ]
+
     user = models.ForeignKey(User on_delete=models.CASCADE) #recipient of notifications
-    type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
     post = models.ForeignKey(
         Post,
         null=True,
