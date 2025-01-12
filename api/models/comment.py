@@ -6,11 +6,11 @@ from .post import Post
 
 class Comment(models.Model):
     # changed models to cascade on deletion of post or commenter 
-    post_id = models.ForeignKey(
+    post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE
     )
-    commenter_id = models.ForeignKey(
+    commenter = models.ForeignKey(
         User,
         on_delete=models.CASCADE
     )
