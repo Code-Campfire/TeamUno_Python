@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,13 +79,14 @@ WSGI_APPLICATION = 'codefire_python_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'team_uno',
-        'USER': 'postgres',
-        'PASSWORD': '1342',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': config('DATABASE_NAME', default=''),
+        'USER': config('DATABASE_USER', default=''),  
+        'PASSWORD': config('DATABASE_PASSWORD', default=''),  
+        'HOST': config('DATABASE_HOST', default='localhost'),  
+        'PORT': config('DATABASE_PORT', default='5432'),
     }
 }
+# database connection populated with .env
 
 
 # Password validation
