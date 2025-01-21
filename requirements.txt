@@ -3,5 +3,4 @@ Django==5.1.4
 djangorestframework==3.15.2
 psycopg2==2.9.10
 sqlparse==0.5.3
-
-# added psycopg2 for sql/django integration
+Pillow==11.1.0
