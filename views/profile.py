@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from .profile import Profile
+from api.models import Profile
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,16 +11,16 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
         url = serializers.HyperlinkedIdentityField(
-            view_name='Profile', lookup_field='id'
+            view_name='profile_detail', lookup_field='id'
         )
-        fields = ('id', 'user', 'bio', 'birthdate', 'profilepicture')
+        fields = ('url', 'id', 'user', 'bio', 'birthdate', 'profile_picture')
         depth = 1
 
-class Participants(ViewSet):
+class Profiles(ViewSet):
     def retrieve(self, request, pk=None):
         try:
-            participant = Profile.objects.get(pk=pk)
-            serializer = ProfileSerializer(participant, context={"request": request})
+            profile = Profile.objects.get(pk=pk)
+            serializer = ProfileSerializer(profile, context={"request": request})
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
