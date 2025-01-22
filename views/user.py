@@ -3,18 +3,36 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .profile import ProfileSerializer
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for Users
-
-    Arguments:
-        serializers
-    """
-
     class Meta:
         model = User
-        url = serializers.HyperlinkedIdentityField(view_name="user", lookup_field="id")
+        url = serializers.HyperlinkedIdentityField(
+            view_name="user-detail", 
+            lookup_field="pk"  
+        )
+        fields = (
+            "id",
+            "url",
+            "username",
+            "password",
+            "first_name",
+            "last_name",
+            "email",
+            "is_staff"
+        )
+
+class UserWithProfileSerializer(serializers.HyperlinkedModelSerializer):
+    profile = ProfileSerializer(required=False)  # Made optional
+    
+    class Meta:
+        model = User  
+        url = serializers.HyperlinkedIdentityField(
+            view_name="user-detail",
+            lookup_field="pk"
+        )
         fields = (
             "id",
             "url",
@@ -24,29 +42,20 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             "last_name",
             "email",
             "is_staff",
+            "profile"
         )
-class Users(ViewSet):
-    """Users for MagicianFinder
-    Purpose: Allow a user to communicate with the MagicianFinder database to GET PUT POST and DELETE Users.
-    Methods: GET PUT(id) POST
-    """
 
+class Users(ViewSet):
     def retrieve(self, request, pk=None):
-        """Handle GET requests for single customer
-        Purpose: Allow a user to communicate with the MagicianFinder database to retrieve  one user
-        Methods:  GET
-        Returns:
-            Response -- JSON serialized customer instance
-        """
         try:
             user = User.objects.get(pk=pk)
-            serializer = UserSerializer(user, context={"request": request})
+            # No need to fetch profile separately - serializer will handle it
+            serializer = UserWithProfileSerializer(user, context={"request": request})
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
 
     def list(self, request):
-        """Handle GET requests to user resource"""
         users = User.objects.all()
         serializer = UserSerializer(users, many=True, context={"request": request})
         return Response(serializer.data)
