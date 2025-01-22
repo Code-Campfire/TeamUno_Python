@@ -7,7 +7,11 @@ Create a virtual environment: python3 -m venv venv
 
 Activate virtual environment: source venv/bin/activate
 
-Install dependencies: pip3 install django djangorestframework
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
 
 Running the Project
 
