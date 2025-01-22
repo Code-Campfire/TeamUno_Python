@@ -13,7 +13,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         url = serializers.HyperlinkedIdentityField(
             view_name='profile_detail', lookup_field='id'
         )
-        fields = ('url', 'id', 'user', 'bio', 'birthdate', 'profile_picture')
+        fields = ('url', 'id', 'user', 'bio', 'birth_date', 'profile_picture')
         depth = 1
 
 class Profiles(ViewSet):
