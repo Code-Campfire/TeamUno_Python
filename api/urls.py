@@ -1,6 +1,11 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
+from .views.auth import AuthViewSet
+
+router = DefaultRouter()
+router.register(r'auth', AuthViewSet, basename='auth')
 
 urlpatterns = [
-    path('test/', views.test_view),
+    path('', include(router.urls)),
 ]
