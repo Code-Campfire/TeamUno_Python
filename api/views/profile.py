@@ -19,8 +19,12 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 class Profiles(ViewSet):
     def retrieve(self, request, pk=None):
         try:
-            profile = Profile.objects.get(pk=pk)
+            profile = Profile.objects.get(pk=pk)  # pylint: disable=no-member
             serializer = ProfileSerializer(profile, context={"request": request})
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
+    def list(self, request):
+        profiles = Profile.objects.all()  # pylint: disable=no-member
+        serializer = ProfileSerializer(profiles, many=True, context={"request": request})
+        return Response(serializer.data)
