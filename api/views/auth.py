@@ -6,7 +6,12 @@ from rest_framework import status
 
 from django.contrib.auth import login
 
-from api.serializers.auth_serializers import SignupSerializer, LoginSerializer, LogoutSerializer, SessionSerializer
+from api.serializers.auth_serializers import (
+    SignupSerializer,
+    LoginSerializer,
+    LogoutSerializer,
+    SessionSerializer,
+)
 
 
 class AuthViewSet(ViewSet):
@@ -55,12 +60,11 @@ class AuthViewSet(ViewSet):
         """
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.validated_data  
+            user = serializer.validated_data
             login(request, user)  # Log the user in (sets the session)
             return Response({"message": "Login successful."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
     @action(detail=False, methods=["post"])
     def logout(self, request):
         """
@@ -75,13 +79,15 @@ class AuthViewSet(ViewSet):
         Returns:
             Response: A response object confirming the user has been logged out.
         """
-        serializer = LogoutSerializer(data=request.data, context={'request': request})
+        serializer = LogoutSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()  # This will flush the session
-            return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": "Logout successful."}, status=status.HTTP_200_OK
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
+
+    @action(detail=False, methods=["GET"], permission_classes=[IsAuthenticated])
     def check_session(self, request):
         """
         Checks if the user is authenticated via the saved session.
@@ -89,4 +95,3 @@ class AuthViewSet(ViewSet):
         """
         serializer = SessionSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
