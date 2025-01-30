@@ -27,6 +27,21 @@ class Friendship(models.Model):
         if self.requesting == self.requested:
             raise ValidationError("User cannot send friendship requests to themselves.")
         super().save(*args, **kwargs)
+
+    def accept(self):
+        accepted_status = StatusTypes.objects.get(status='ACCEPTED') # pylint: disable=no-member
+        self.status = accepted_status
+        self.save()
+    
+    def reject(self):
+        rejected_status = StatusTypes.objects.get(status='REJECTED') # pylint: disable=no-member
+        self.status = rejected_status
+        self.save()
+    
+    def terminate(self):
+        terminated_status = StatusTypes.objects.get(status='TERMINATED') # pylint: disable=no-member
+        self.status = terminated_status
+        self.save()
     
     class Meta:
         constraints = [
@@ -38,4 +53,8 @@ class Friendship(models.Model):
                 fields=['requested_id', 'requesting_id'],
                 name='unique_reverse_friendship'
             )
+        ]
+        indexes = [
+            models.Index(fields=['status'], name='friendship_status_idx'),
+            models.Index(fields=['requesting', 'requested'], name='friendship_users_idx')
         ]
