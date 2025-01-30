@@ -86,3 +86,11 @@ class LogoutSerializer(serializers.Serializer):
             request.session.flush()
         else:
             raise serializers.ValidationError("No user logged in.")
+
+class SessionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for returning authenticated user session
+    """
+    class Meta:
+        model = User
+        fields = ["id", "username"]

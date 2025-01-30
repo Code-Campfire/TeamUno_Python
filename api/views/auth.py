@@ -1,14 +1,12 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import action
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login
 
-from api.serializers.auth_serializers import SignupSerializer, LoginSerializer, LogoutSerializer
+from api.serializers.auth_serializers import SignupSerializer, LoginSerializer, LogoutSerializer, SessionSerializer
 
 
 class AuthViewSet(ViewSet):
@@ -62,7 +60,7 @@ class AuthViewSet(ViewSet):
             return Response({"message": "Login successful."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @csrf_exempt #testing locally, remove in production
+    
     @action(detail=False, methods=["post"])
     def logout(self, request):
         """
@@ -82,3 +80,13 @@ class AuthViewSet(ViewSet):
             serializer.save()  # This will flush the session
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
+    def check_session(self, request):
+        """
+        Checks if the user is authenticated via the saved session.
+        serializer returns the user ID and username.
+        """
+        serializer = SessionSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
