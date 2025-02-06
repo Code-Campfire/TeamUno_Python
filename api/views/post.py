@@ -26,11 +26,16 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostViewSet(viewsets.ViewSet):
     def list(self, request):
+        page_number = request.GET.get("page")
         posts = Post.objects.all().order_by("created_at").reverse()
+
+        if (page_number == None):
+            serializer = PostSerializer(posts, many=True)
+
+            return response.Response(serializer.data, status=status.HTTP_200_OK)
 
         # Once we know how many posts per page we change the 1 to however many we can view per page
         paginator = Paginator(posts, 1, error_messages={"no_results": "Page does not exists."})
-        page_number = request.GET.get("page")
 
         try:
             page = paginator.page(page_number)
