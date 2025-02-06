@@ -10,7 +10,7 @@ Activate virtual environment: source venv/bin/activate
 Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 Running the Project
