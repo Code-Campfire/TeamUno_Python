@@ -26,20 +26,21 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostViewSet(viewsets.ViewSet):
     def list(self, request):
-        posts = Post.objects.all().reverse()
+        posts = Post.objects.all().order_by("created_at").reverse()
 
-        # paginator = Paginator(posts, 25)
+        # Once we know how many posts per page we change the 1 to however many we can view per page
+        paginator = Paginator(posts, 1, error_messages={"no_results": "Page does not exists."})
+        page_number = request.GET.get("page")
 
-        serializer = PostSerializer(posts, many=True)
+        try:
+            page = paginator.page(page_number)
 
-        return response.Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = PostSerializer(page, many=True)
 
+            return response.Response(serializer.data, status=status.HTTP_200_OK)
+        except:
 
-
-# A backend route /api/posts is implemented to fetch posts from the database 
-# in reverse chronological order.
-
-# Pagination is supported to fetch posts in batches.
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
 
 # The frontend displays posts retrieved from the API, including the post content,
 # author, timestamp, and like count.
