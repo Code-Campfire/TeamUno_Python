@@ -4,3 +4,4 @@ from .notification import Notification
 from .friendship import Friendship
 from .like import Like
 from .profile import Profile
+from .statustypes import StatusTypes

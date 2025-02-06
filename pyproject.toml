@@ -1,0 +1,46 @@
+# [tool.poetry]
+# name = "teamuno-python"
+# version = "0.1.0"
+# description = ""
+# authors = ["Your Name <you@example.com>"]
+# readme = "README.md"
+
+
+
+
+# [build-system]
+# requires = ["poetry-core"]
+# build-backend = "poetry.core.masonry.api"
+
+# [project]
+# name = "teamuno_python"
+# requires-python = ">=3.12"
+# dependencies = [
+# "asgiref==3.*",
+# "Django==5.*",
+# "djangorestframework==3.*",
+# "psycopg2==2.*",
+# "sqlparse==0.*",
+# "Pillow==11.*"
+# ]
+
+[tool.poetry]
+name = "teamuno_python"
+version = "0.1.0"
+description = "Your project description"
+authors = ["Your Name <your@email.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+asgiref = ">=3.0,<4.0"
+Django = ">=5.0,<6.0"
+djangorestframework = ">=3.0,<4.0"
+psycopg2-binary = ">=2.9,<3.0"  # or use psycopg2 if compiling from source
+sqlparse = ">=0.4.0,<1.0"
+Pillow = ">=10.0,<11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
