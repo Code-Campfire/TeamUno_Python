@@ -43,9 +43,7 @@ class PostViewSet(viewsets.ViewSet):
             serializer = PostSerializer(page, many=True)
 
             return response.Response(serializer.data, status=status.HTTP_200_OK)
+
         except:
 
             return response.Response(status=status.HTTP_404_NOT_FOUND)
-
-# The frontend displays posts retrieved from the API, including the post content,
-# author, timestamp, and like count.
