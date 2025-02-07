@@ -9,7 +9,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from api import views
 from api.views import PostViewSet, Profiles, Users, test_view #Edwin Moz added Post import
 
-router = routers.DefaultRouter(trailing_slash=False)
+router = DefaultRouter(trailing_slash=False)
 
 router.register(r"users", Users, "user")
 ## ///////////START CODE ADDED BY EDWIN MOZ ##
