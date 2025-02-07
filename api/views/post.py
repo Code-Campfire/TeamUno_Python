@@ -1,4 +1,5 @@
 from api.models import Like, Post
+from datetime import datetime
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -25,6 +26,24 @@ class PostSerializer(serializers.ModelSerializer):
         return Like.objects.filter(content_type=content_type, object_id=obj.id).count()
 
 class PostViewSet(viewsets.ViewSet):
+    def create(self, request):
+        data = request.data
+
+        author_id = data.get("author_id")
+        author = User.objects.get(id=author_id)
+        content = data.get("content")
+
+        post = Post.objects.create(
+                author_id = author,
+                content = content,
+                created_at = datetime.now(),
+                updated_at = datetime.now()
+                )
+
+        serializer = PostSerializer(post, many=False)
+
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
+
     def list(self, request):
         page_number = request.GET.get("page")
         posts = Post.objects.all().order_by("created_at").reverse()
