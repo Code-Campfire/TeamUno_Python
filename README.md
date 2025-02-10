@@ -33,3 +33,9 @@ Available Endpoints
 Admin interface: http://127.0.0.1:8000/admin/
 API test endpoint: http://127.0.0.1:8000/api/test/
 Project Structure codefire_python_backend/ ├── api/ # API application ├── codefire_python_backend/# Django project settings ├── manage.py # Django management script └── db.sqlite3 # SQLite database
+
+### Setting up your .env files
+1. Create a file named `.env.local` in the root directory of your project.
+2. Add your local secret values to the `.env.local` file. For example:
+
+**DO NOT** add secrets to the .env file in the root directory. This file is for non-sensitive values only.
