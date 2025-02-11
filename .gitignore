@@ -3,7 +3,7 @@
 __pycache__/
 
 # Environment variables
-.env
+.env.*
 
 #virtual environments
 env/
@@ -19,4 +19,3 @@ db.sqlite3
 # OS-specific files
 .DS_Store
 Thumbs.db
-.env 
