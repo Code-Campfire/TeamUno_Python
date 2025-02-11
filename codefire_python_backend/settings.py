@@ -10,17 +10,23 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
-from dotenv import dotenv_values
-
-config = {
-    **dotenv_values(".env"),  # load shared development variables
-    **dotenv_values(".env.local"),  # load sensitive variables
-}
+from dotenv import load_dotenv
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env_path = BASE_DIR / '.env'
+env_local_path = BASE_DIR / '.env.local'
+
+load_dotenv(env_path)
+load_dotenv(env_local_path)
+
+# config = {
+#     **dotenv_values(env_path),      # load shared development variables
+#     **dotenv_values(env_local_path) # load sensitive variables
+# }
 
 
 # Quick-start development settings - unsuitable for production
@@ -46,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
-    "corsheaders",
+
 ]   
 
 MIDDLEWARE = [
