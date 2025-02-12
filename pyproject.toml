@@ -20,6 +20,7 @@ psycopg2 = "^2.9.10"
 sqlparse = "^0.5.3"
 Pillow = "^11.1.0"
 python-dotenv = "^1.0.1"
+django-cors-headers = "^4.7.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
