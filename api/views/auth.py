@@ -34,11 +34,10 @@ class AuthViewSet(ViewSet):
         """
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
-            (
-                serializer.save()
-            )  # Save calls create in serializer, create is create_user, password automatically hashed.
+            user = serializer.save()  # Creates the user
+            login(request, user)  # Log the user in automatically
             return Response(
-                {"message": "User created successfully."},
+                {"message": "User created and logged in successfully."},
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
