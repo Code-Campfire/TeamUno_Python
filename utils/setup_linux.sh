@@ -29,8 +29,10 @@ if ! command -v psql &> /dev/null; then
     if [[ $install_psql =~ ^[Yy]$ ]]; then
         echo "Installing PostgreSQL..."
         sudo apt install postgresql postgresql-contrib -y
-        sudo systemctl enable postgresql
-        sudo systemctl start postgresql
+        sudo service postgresql enable
+        sudo service postgresql start
+
+        sleep 5  # Wait for PostgreSQL to start
         
         # Create database user
         read -p "Enter new PostgreSQL username: " pg_user
@@ -41,9 +43,10 @@ if ! command -v psql &> /dev/null; then
     fi
 else
     echo "PostgreSQL is already installed"
-    if ! systemctl is-active --quiet postgresql; then
+    if ! service postgresql status > /dev/null 2>&1; then
         echo "PostgreSQL is not running. Starting service..."
-        sudo systemctl start postgresql
+        sudo service postgresql start
+        sleep 5  # Wait for PostgreSQL to start
     fi
 fi
 # pyenv setup
