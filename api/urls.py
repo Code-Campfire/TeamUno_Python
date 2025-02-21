@@ -18,6 +18,5 @@ router.register(r"posts", PostViewSet, "post")
 router.register(r"profiles", Profiles, "profile") 
 
 urlpatterns = [
-    path('test/', test_view),
-    path('', include(router.urls)) 
+    path('test/', views.test_view),
 ]
