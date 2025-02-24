@@ -29,7 +29,7 @@ Create a superuser (for admin access): `python3 manage.py createsuperuser`
 
 Start the development server: `python3 manage.py runserver`
 
-Available Endpoints
+Default Endpoints
 
 Admin interface: http://127.0.0.1:8000/admin/
 API test endpoint: http://127.0.0.1:8000/api/test/
@@ -44,26 +44,51 @@ Project Structure codefire_python_backend/ ├── api/ # API application ├�
 
 ### Testing the application
 
-Run migrations to apply session related database changes.
+BEFORE TESTING:
+If database changes have been made, run migrations to apply session related database changes.
+
 Use Postman to access these endpoints:
+
+Authorization:
+Make a GET request to the base URL every time a new request is made to get a new CSRF token.
+
+Key: X-CSRFToken
+Value: **token**
+
+Sign Up
+POST
 <http://127.0.0.1:8000/api/auth/signup>
 this needs a body with these values to add to your database.
+
+Body:
 {
 "username": "",
 "email": "",
 "password": ""
 }
 
+Login
+POST
 <http://127.0.0.1:8000/api/auth/login>
-this needs a body with values from your database:
+
+Body:
 {
 "username": "",
 "password": ""
 }
 
-<http://127.0.0.1:8000/api/auth/logout>
-In order to logout, you will need to manually add the X-CSRFToken to the headers, using the value generated from login
-key value
-X-CSRFToken copy pasted value from login/signup
+These last two endpoints use a X-CSRFToken to authorize the action.
 
+Check Session
+GET
 <http://127.0.0.1:8000/api/auth/check_session>
+
+Body:
+{}
+
+Logout
+POST
+<http://127.0.0.1:8000/api/auth/logout>
+
+Body:
+{}
