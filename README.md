@@ -6,7 +6,7 @@ Setup and Installation
 
 pyenv and Python version instllation:
 
-Linux/WSL:
+Linux/WSL: (Debian/Ubuntu)
 `curl -fsSL <https://pyenv.run> | bash`
 
 ```bash
