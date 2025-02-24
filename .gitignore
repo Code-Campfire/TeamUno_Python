@@ -3,20 +3,18 @@
 __pycache__/
 
 # Environment variables
-.env
+.env.*
 
 #virtual environments
-env/
-venv/
+env*/
+venv*/
 
 # Logs
 *.log
 
 #Django
 /media/
-db.sqlite3
 
 # OS-specific files
 .DS_Store
 Thumbs.db
-.env 

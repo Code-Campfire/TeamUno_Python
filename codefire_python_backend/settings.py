@@ -10,15 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
+from dotenv import load_dotenv 
 from pathlib import Path
-from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+env_path = BASE_DIR / '.env'
+env_local_path = BASE_DIR / '.env.local'
+load_dotenv(env_path)
+load_dotenv(env_local_path)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-vvee$hb!15m^qisgcbuc&*q7%d2gom*8#=!j5#=fnw3j#%8ceg'
@@ -40,16 +42,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'corsheaders',
+
 ]   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware", 
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",  
 ]
 
 ROOT_URLCONF = 'codefire_python_backend.urls'
@@ -79,11 +93,11 @@ WSGI_APPLICATION = 'codefire_python_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME', default=''),
-        'USER': config('DATABASE_USER', default=''),  
-        'PASSWORD': config('DATABASE_PASSWORD', default=''),  
-        'HOST': config('DATABASE_HOST', default='localhost'),  
-        'PORT': config('DATABASE_PORT', default='5432'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),  
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),  
+        'HOST': os.getenv('DATABASE_HOST', default='localhost'),  
+        'PORT': os.getenv('DATABASE_PORT', default='5432'),
     }
 }
 # database connection populated with .env
