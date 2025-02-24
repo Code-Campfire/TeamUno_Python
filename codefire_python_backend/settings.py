@@ -9,9 +9,19 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import environ
+import os
 from pathlib import Path
 from decouple import config
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Initialize environment variables
+env = environ.Env()
+
+# Read the .env.local file
+environ.Env.read_env(os.path.join(BASE_DIR, ".env.local"))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,12 +88,12 @@ WSGI_APPLICATION = 'codefire_python_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME', default=''),
-        'USER': config('DATABASE_USER', default=''),  
-        'PASSWORD': config('DATABASE_PASSWORD', default=''),  
-        'HOST': config('DATABASE_HOST', default='localhost'),  
-        'PORT': config('DATABASE_PORT', default='5432'),
+        'ENGINE': env("DB_ENGINE", default="django.db.backends.postgresql"),
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST", default="localhost"),
+        'PORT': env("DB_PORT", default="5432"),
     }
 }
 # database connection populated with .env
