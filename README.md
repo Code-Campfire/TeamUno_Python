@@ -32,7 +32,7 @@ Close and reopen terminal
 `pyenv install 3.13`
 `pyenv global 3.13`
 
-Create a virtual environment: `python3 -m venv python_{version number}_venv`
+Create a virtual environment: `python3 -m venv venv_py_{version number}`
 
 Activate virtual environment: `source venv/bin/activate`
 
