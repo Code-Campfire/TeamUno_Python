@@ -1,6 +1,6 @@
 # Team_Uno Python Backend
 
-## A Django REST API project for Team_Uno's project.
+## A Django REST API project for Team_Uno's project
 
 Setup and Installation
 
@@ -19,7 +19,6 @@ MacOS:
 `brew install pyenv`
 `brew install openssl readline sqlite3 xz zlib tcl-tk@8`
 
-
 Further setup:
 
 ```Bash
@@ -27,6 +26,7 @@ Further setup:
   echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
   echo 'eval "$(pyenv init - zsh)"' >> ~/.zshrc
   ```
+
 Close and reopen terminal
 
 `pyenv install 3.13`
@@ -37,7 +37,7 @@ Create a virtual environment: `python3 -m venv venv_py_{version number}`
 Activate virtual environment: `source venv/bin/activate`
 
 Install `pipx`
-Link to pipx installation instructions: https://pipxproject.github.io/pipx/installation/
+Link to pipx installation instructions: <https://pipxproject.github.io/pipx/installation/>
 
 **(Outside of the project directory)**
 Install Poetry (dependancy manager): `pipx install poetry`
@@ -51,7 +51,7 @@ poetry lock && poetry install
 
 Running the Project
 
-Apply database migrations: `python3 manage.py` migrate
+Apply database migrations: `python3 manage.py migrate`
 
 Create a superuser (for admin access): `python3 manage.py createsuperuser`
 
