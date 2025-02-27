@@ -9,26 +9,20 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import environ
+
 import os
+from dotenv import load_dotenv 
 from pathlib import Path
-from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Initialize environment variables
-env = environ.Env()
-
-# Read the .env.local file
-environ.Env.read_env(os.path.join(BASE_DIR, ".env.local"))
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+env_path = BASE_DIR / '.env'
+env_local_path = BASE_DIR / '.env.local'
+load_dotenv(env_path)
+load_dotenv(env_local_path)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-vvee$hb!15m^qisgcbuc&*q7%d2gom*8#=!j5#=fnw3j#%8ceg'
@@ -50,16 +44,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'corsheaders',
+
 ]   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware", 
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",  
 ]
 
 ROOT_URLCONF = 'codefire_python_backend.urls'
@@ -88,12 +94,12 @@ WSGI_APPLICATION = 'codefire_python_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env("DB_ENGINE", default="django.db.backends.postgresql"),
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST", default="localhost"),
-        'PORT': env("DB_PORT", default="5432"),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),  
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),  
+        'HOST': os.getenv('DATABASE_HOST', default='localhost'),  
+        'PORT': os.getenv('DATABASE_PORT', default='5432'),
     }
 }
 # database connection populated with .env
