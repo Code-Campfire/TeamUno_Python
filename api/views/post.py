@@ -2,7 +2,7 @@ from api.models import Like, Post
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from rest_framework import response, serializers, status, viewsets
+from rest_framework import response, serializers, status, viewsets, permissions
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,6 +25,8 @@ class PostSerializer(serializers.ModelSerializer):
         return Like.objects.filter(content_type=content_type, object_id=obj.id).count()
 
 class PostViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
     def list(self, request):
         page_number = request.GET.get("page")
         posts = Post.objects.all().order_by("created_at").reverse()
