@@ -12,7 +12,7 @@ class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friendship
         fields = ('id', 'requesting', 'requested', 'created_at', 'updated_at', 'status')
-        read_only_fields = ('requesting', 'created_at', 'updated_at')
+        read_only_fields = ('requesting', 'created_at', 'updated_at', 'status')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -136,6 +136,9 @@ class Friendships(viewsets.ModelViewSet):
         if request.user != friendship.requested:
             return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
         
+        if friendship.status.status != "PENDING":
+            return Response({"detail": "This request is not pending."}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             rejected_status = StatusTypes.objects.get(status='REJECTED')  # pylint: disable=no-member
             friendship.status = rejected_status
@@ -152,6 +155,9 @@ class Friendships(viewsets.ModelViewSet):
         if request.user not in [friendship.requesting, friendship.requested]:
             return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
         
+        if friendship.status.status != "ACCEPTED":
+            return Response({"detail": "Only accepted friendships can be terminated."}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             terminated_status = StatusTypes.objects.get(status='TERMINATED')  # pylint: disable=no-member
             friendship.status = terminated_status

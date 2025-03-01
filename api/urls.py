@@ -9,6 +9,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from api import views
 from api.views import PostViewSet, Profiles, Users, test_view #Edwin Moz added Post import
 from .views.auth import AuthViewSet
+from .views.friendship import Friendships
 
 router = routers.DefaultRouter(trailing_slash=False)
 
@@ -18,6 +19,7 @@ router.register(r"posts", PostViewSet, "post")
 ## ///////////END CODE ADDED BY EDWIN MOZ ##
 router.register(r"profiles", Profiles, "profile") 
 router.register(r'auth', AuthViewSet, basename='auth')
+router.register(r'friendships', Friendships, basename='friendship')
 
 urlpatterns = [
     path('test/', views.test_view),
