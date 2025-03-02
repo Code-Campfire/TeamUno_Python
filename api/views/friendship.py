@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from django.db import IntegrityError
 from api.models import Friendship, StatusTypes
-from rest_framework import serializers
+from rest_framework import serializers, permissions
 
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,6 +28,7 @@ class FriendshipSerializer(serializers.ModelSerializer):
         return representation
 
 class Friendships(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Friendship.objects.all()  # pylint: disable=no-member
     serializer_class = FriendshipSerializer
     
